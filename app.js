@@ -1,9 +1,29 @@
-const http = require('http');
+const express = require('express');
+const app = express();
 
-const routes = require('./routes');
+app.get('/favicon.ico', (req, res) => res.status(204));
 
-console.log(routes.someText);
+app.use('/', (req, res, next) => {
+    console.log('This always runs!');
+    next();
+});
 
-const server = http.createServer(routes.handler);
+app.use('/add-product', (req, res, next) => {
+    console.log('In the middleware!');
+    res.send('<h1>Add product page.</h1>');
+});
 
-server.listen(3000);
+app.use('/', (req, res, next) => {
+    console.log('In the next middleware!');
+    res.send('witamy');
+});
+
+
+
+app.listen(3000);
+
+
+
+
+
+

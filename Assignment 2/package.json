@@ -2,11 +2,11 @@
   "name": "nodejsprojects",
   "version": "1.0.0",
   "description": "Complete Node.js guide",
-  "main": "app.js",
+  "main": "Express.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "nodemon Express.js",
+    "start-server": "node Express.js"
   },
   "author": "Konrad",
   "license": "ISC",
