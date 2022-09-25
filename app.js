@@ -1,33 +1,24 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const adminData = require('./routes/admin.js');
-const shopRouter = require('./routes/shop.js');
-const app = express();
 const path = require('path');
 
-app.set('view engine', 'pug');
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-app.get('/favicon.ico', (req, res) => res.status(204));
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(shopRouter);
-app.use('/admin', adminData.routes);
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 
-app.use('', (req, res, next) => {
-    res.status(404).render('404', {pageTitle: 'Page not found'});
-})
-
-app.use('/users', (req, res, next) => {
-    res.sendFile(path.join(__dirname, 'views', 'users.html'));
-})
+app.use((req, res, next) => {
+  res.status(404).render('404', { pageTitle: 'Page Not Found' });
+});
 
 app.listen(3000);
-
-
-
-
-
-
