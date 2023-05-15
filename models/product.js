@@ -3,12 +3,15 @@ const path = require('path');
 const pathUtil = require('../util/path');
 
 module.exports = class Product {
-  constructor(title) {
+  constructor(title, imageUrl, description, price) {
     this.title = title;
+    this.imageUrl = imageUrl;
+    this.description = description;
+    this.price = price;
   }
 
   save() {
-    const p = path.join(pathUtil, 
+    const p = path.join(pathUtil,
       'data',
       'products.json');
     fs.readFile(p, (err, fileContent) => {
@@ -24,7 +27,7 @@ module.exports = class Product {
   }
 
   static fetchAll(cb) {
-    const p = path.join(pathUtil, 
+    const p = path.join(pathUtil,
       'data',
       'products.json');
     fs.readFile(p, (err, fileContent) => {
