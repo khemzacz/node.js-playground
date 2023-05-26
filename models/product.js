@@ -33,7 +33,6 @@ module.exports = class Product {
       if (!err) {
         products = JSON.parse(fileContent);
       }
-      console.log('this id:' + this.id);
       if (this.id) {
         const existingProductIndex =
           products.findIndex(prod => prod.id === this.id);
@@ -49,13 +48,45 @@ module.exports = class Product {
     });
   }
 
+  remove() {
+    fs.readFile(p, (err, fileContent) => {
+      let products = [];
+      if (!err) {
+        products = JSON.parse(fileContent);
+      }
+      console.log('this id:' + this.id);
+      if (this.id) {
+        const existingProductIndex =
+          products.findIndex(prod => prod.id === this.id);
+        products.splice(existingProductIndex, 1);
+        console.log(products);
+      } else {
+
+      }
+
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        console.log(err);
+      });
+    });
+  }
+
   static fetchAll(cb) {
     getProductsFromFile(cb);
+  }
+
+  static parseFromJson(json) {
+    return new Product(
+      json.id,
+      json.title,
+      json.imageUrl,
+      json.description,
+      json.price);
   }
 
   static findById(id, cb) {
     getProductsFromFile(products => {
       const product = products.find(product => product.id === id);
+      console.log(product);
       cb(product);
     });
   }
