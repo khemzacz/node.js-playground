@@ -48,24 +48,14 @@ module.exports = class Product {
     });
   }
 
-  remove() {
-    fs.readFile(p, (err, fileContent) => {
-      let products = [];
-      if (!err) {
-        products = JSON.parse(fileContent);
-      }
-      console.log('this id:' + this.id);
-      if (this.id) {
-        const existingProductIndex =
-          products.findIndex(prod => prod.id === this.id);
-        products.splice(existingProductIndex, 1);
-        console.log(products);
-      } else {
+  static deleteById(id) {
+    getProductsFromFile(products => {
+      const updatedProducts = products.filter(
+        prod => prod.id !== id);
+      fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
+        if (!err) {
 
-      }
-
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        console.log(err);
+        }
       });
     });
   }
