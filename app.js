@@ -1,25 +1,41 @@
-const path = require('path');
+import { fileURLToPath } from 'url';
+import path from 'path';
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const db = require('./util/database');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+import express from 'express';
+import bodyParser from 'body-parser';
+import sequelize from './util/database.js';
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+import adminRoutes from './routes/admin.js';
+import shopRoutes from './routes/shop.js';
 
-const faultsController = require('./controllers/faults');
+import invalidRoute from './controllers/faults.js';
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }), (req, res, next) =>
+  next());
+app.use(express.static(path.join(__dirname, 'public')), (req, res, next) =>
+  next());
 
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+app.use('/admin', adminRoutes, (req, res, next) =>
+  next());
+app.use(shopRoutes, (req, res, next) =>
+  next());
 
-app.use(faultsController.invalidRoute);
+app.use(invalidRoute, (req, res, next) =>
+  next());
 
-app.listen(3000);
+sequelize.sync().then(result => {
+  // console.log(result);
+  app.listen(3000);
+}).catch(err => {
+  console.log(err);
+});
+
+

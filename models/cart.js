@@ -1,16 +1,15 @@
-const fs = require('fs');
-const path = require('path');
-const pathUtil = require('../util/path');
+import { readFile, writeFile } from 'fs';
+import { join } from 'path';
+import pathUtil from '../util/path.js';
 
-const p = path.join(pathUtil,
+const p = join(pathUtil,
   'data',
   'cart.json');
 
-
-module.exports = class Cart {
+export default class Cart {
   static addProduct(id, productPrice) {
     // Fetch the previous cart
-    fs.readFile(p, (err, fileContent) => {
+    readFile(p, (err, fileContent) => {
       let cart = { products: [], totalPrice: 0 };
       if (!err) {
         cart = JSON.parse(fileContent);
@@ -32,14 +31,14 @@ module.exports = class Cart {
         cart.products = [...cart.products, updatedProduct];
       }
       cart.totalPrice = cart.totalPrice + +productPrice;
-      fs.writeFile(p, JSON.stringify(cart), err => {
+      writeFile(p, JSON.stringify(cart), err => {
         console.log(err);
       });
     });
   }
 
   static deleteProduct(id, productPrice) {
-    fs.readFile(p, (err, fileContent) => {
+    readFile(p, (err, fileContent) => {
       if (err) {
         return;
       }
@@ -54,7 +53,7 @@ module.exports = class Cart {
         prod.id !== id);
       updatedCart.totalPrice =
         fileContent.totalPrice - productPrice * productQty;
-      fs.writeFile(p, JSON.stringify(updatedCart), err => {
+      writeFile(p, JSON.stringify(updatedCart), err => {
         if (!err) {
         }
       });
@@ -62,7 +61,7 @@ module.exports = class Cart {
   }
 
   static getCart(cb) {
-    fs.readFile(p, (err, fileContent) => {
+    readFile(p, (err, fileContent) => {
       const cart = JSON.parse(fileContent)
       if (err) {
         cb(null);

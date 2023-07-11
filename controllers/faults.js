@@ -1,3 +1,3 @@
-exports.invalidRoute = (req, res, next) => {
+export default function invalidRoute(req, res, next) {
   res.status(404).render('404', { pageTitle: 'Page Not Found', path: '' });
 }

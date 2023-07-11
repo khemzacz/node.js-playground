@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Complete Node.js Guide",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
@@ -14,11 +15,14 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "@types/sequelize": "^4.28.15",
     "body-parser": "^1.18.3",
     "ejs": "^3.1.8",
     "express": "^4.16.3",
     "express-handlebars": "^6.0.6",
     "mysql2": "^3.3.3",
-    "pug": "^3.0.2"
-  }
+    "pug": "^3.0.2",
+    "sequelize": "^6.32.0"
+  },
+  "keywords": []
 }
