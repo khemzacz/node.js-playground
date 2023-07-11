@@ -2,27 +2,24 @@ import productModel from '../models/product.js';
 import cartModel from '../models/cart.js';
 
 export function getProducts(req, res, next) {
-  productModel.fetchAll()
-    .then(([rows, fieldData]) => {
-      res.render('shop/product-list', {
-        prods: rows,
-        pageTitle: 'Shop',
-        path: '/products',
-        hasProducts: rows.length > 0,
-        activeShop: true,
-        productCSS: true
-      });
+  productModel.findAll().then(products => {
+    res.render('shop/product-list', {
+      prods: products,
+      pageTitle: 'All Products',
+      path: '/products'
     })
-    .catch(err => console.log(err));
+  }).catch(err => {
+    console.log(err);
+  });
 }
 
 export function getProduct(req, res, next) {
   const prodId = req.params.productId;
-  productModel.findById(prodId)
-    .then(([rows, fieldData]) => {
+  productModel.findByPk(prodId)
+    .then(product => {
       res.render('shop/product-detail', {
-        product: rows[0],
-        pageTitle: rows[0].title,
+        product: product,
+        pageTitle: product.title,
         path: '/products'
       });
     })
@@ -31,15 +28,15 @@ export function getProduct(req, res, next) {
 }
 
 export function getIndex(req, res, next) {
-  productModel.fetchAll()
-    .then(([rows, fieldData]) => {
-      res.render('shop/index', {
-        prods: rows,
-        pageTitle: 'Shop',
-        path: '/index'
-      });
+  productModel.findAll().then(products => {
+    res.render('shop/index', {
+      prods: products,
+      pageTitle: 'Shop',
+      path: '/'
     })
-    .catch(err => console.log(err));
+  }).catch(err => {
+    console.log(err);
+  });
 }
 
 export function getCart(req, res, next) {
